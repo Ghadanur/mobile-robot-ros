@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Load the robot description from a URDF file -->
+  <param name="robot_description" textfile="$(find mobile_robot)/urdf/rover.urdf"/>
+  <arg name="rviz_config_file" default="$(find mobile_robot)/config/robot_spawned.rviz"/>
+  <!-- Publish Joint States -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>
+ <node name="python_file" pkg="mobile_robot" type="t.py" output="screen" />
+  <node name="odom_broadcaster" pkg="mobile_robot" type="odom_broadcaster.py" output="screen" />
+      <!-- Diff drive -->
+  <node name="serial_node" pkg="rosserial_python" type="serial_node.py" output="screen">
+    <param name="port" value="/dev/ttyACM0" />
+    <param name="baud" value="57600" />
+  </node>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config_file)"/>
+</launch>  
